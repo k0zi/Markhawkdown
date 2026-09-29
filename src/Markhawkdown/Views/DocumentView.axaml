@@ -1,0 +1,36 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ae="using:AvaloniaEdit"
+             xmlns:md="clr-namespace:Markdown.Avalonia;assembly=Markdown.Avalonia"
+             xmlns:vm="using:Markhawkdown.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="600"
+             x:Class="Markhawkdown.Views.DocumentView"
+             x:DataType="vm:DocumentViewModel">
+    <Grid x:Name="Root" ColumnDefinitions="*,Auto,*">
+        <Border x:Name="EditorHost" Grid.Column="0" Classes="Pane">
+            <ae:TextEditor x:Name="Editor"
+                           ShowLineNumbers="True"
+                           FontFamily="{StaticResource MonospaceFont}"
+                           FontSize="14"
+                           Padding="8,8,4,8"
+                           Background="Transparent"
+                           WordWrap="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).WordWrap, FallbackValue=True}"
+                           HorizontalScrollBarVisibility="Auto"
+                           VerticalScrollBarVisibility="Visible" />
+        </Border>
+
+        <GridSplitter x:Name="Splitter" Grid.Column="1" Width="6" ResizeDirection="Columns" Background="Transparent" />
+
+        <Border x:Name="PreviewHost" Grid.Column="2" Classes="Pane">
+            <md:MarkdownScrollViewer x:Name="Preview"
+                                     Markdown="{Binding PreviewMarkdown}"
+                                     AssetPathRoot="{Binding AssetPathRoot}"
+                                     MarkdownStyleName="DefaultTheme"
+                                     SelectionEnabled="True"
+                                     SaveScrollValueWhenContentUpdated="True"
+                                     Padding="24,16" />
+        </Border>
+    </Grid>
+</UserControl>

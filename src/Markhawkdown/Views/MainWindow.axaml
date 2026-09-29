@@ -1,0 +1,195 @@
+<suki:SukiWindow xmlns="https://github.com/avaloniaui"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+                 xmlns:enums="clr-namespace:SukiUI.Enums;assembly=SukiUI"
+                 xmlns:vm="using:Markhawkdown.ViewModels"
+                 xmlns:svc="using:Markhawkdown.Services"
+                 xmlns:views="using:Markhawkdown.Views"
+                 mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="760"
+                 x:Class="Markhawkdown.Views.MainWindow"
+                 x:DataType="vm:MainWindowViewModel"
+                 Title="Markhawkdown"
+                 Icon="/Assets/markhawkdown.ico"
+                 Width="1280" Height="800"
+                 MinWidth="640" MinHeight="400"
+                 WindowStartupLocation="CenterScreen"
+                 BackgroundAnimationEnabled="False"
+                 IsMenuVisible="True"
+                 DragDrop.AllowDrop="True">
+
+    <suki:SukiWindow.KeyBindings>
+        <KeyBinding Gesture="Ctrl+N" Command="{Binding NewDocumentCommand}" />
+        <KeyBinding Gesture="Ctrl+O" Command="{Binding OpenCommand}" />
+        <KeyBinding Gesture="Ctrl+S" Command="{Binding SaveCommand}" />
+        <KeyBinding Gesture="Ctrl+Shift+S" Command="{Binding SaveAsCommand}" />
+        <KeyBinding Gesture="Ctrl+W" Command="{Binding CloseCommand}" />
+        <KeyBinding Gesture="Ctrl+Tab" Command="{Binding NextDocumentCommand}" />
+        <KeyBinding Gesture="Ctrl+Shift+Tab" Command="{Binding PreviousDocumentCommand}" />
+        <KeyBinding Gesture="Ctrl+B" Command="{Binding FormatCommand}" CommandParameter="{x:Static svc:MarkdownFormat.Bold}" />
+        <KeyBinding Gesture="Ctrl+I" Command="{Binding FormatCommand}" CommandParameter="{x:Static svc:MarkdownFormat.Italic}" />
+        <KeyBinding Gesture="Ctrl+Shift+X" Command="{Binding FormatCommand}" CommandParameter="{x:Static svc:MarkdownFormat.Strikethrough}" />
+        <KeyBinding Gesture="Ctrl+E" Command="{Binding FormatCommand}" CommandParameter="{x:Static svc:MarkdownFormat.InlineCode}" />
+        <KeyBinding Gesture="Ctrl+K" Command="{Binding FormatCommand}" CommandParameter="{x:Static svc:MarkdownFormat.Link}" />
+        <KeyBinding Gesture="Ctrl+D1" Command="{Binding FormatCommand}" CommandParameter="{x:Static svc:MarkdownFormat.Heading1}" />
+        <KeyBinding Gesture="Ctrl+D2" Command="{Binding FormatCommand}" CommandParameter="{x:Static svc:MarkdownFormat.Heading2}" />
+        <KeyBinding Gesture="Ctrl+D3" Command="{Binding FormatCommand}" CommandParameter="{x:Static svc:MarkdownFormat.Heading3}" />
+        <KeyBinding Gesture="Ctrl+Shift+D8" Command="{Binding FormatCommand}" CommandParameter="{x:Static svc:MarkdownFormat.BulletList}" />
+        <KeyBinding Gesture="Ctrl+Shift+D7" Command="{Binding FormatCommand}" CommandParameter="{x:Static svc:MarkdownFormat.NumberedList}" />
+        <KeyBinding Gesture="Ctrl+Shift+Q" Command="{Binding FormatCommand}" CommandParameter="{x:Static svc:MarkdownFormat.Quote}" />
+        <KeyBinding Gesture="F5" Command="{Binding SetViewModeCommand}" CommandParameter="{x:Static vm:ViewMode.Edit}" />
+        <KeyBinding Gesture="F6" Command="{Binding SetViewModeCommand}" CommandParameter="{x:Static vm:ViewMode.Split}" />
+        <KeyBinding Gesture="F7" Command="{Binding SetViewModeCommand}" CommandParameter="{x:Static vm:ViewMode.Preview}" />
+    </suki:SukiWindow.KeyBindings>
+
+    <suki:SukiWindow.MenuItems>
+        <MenuItem Header="Fájl">
+            <MenuItem Header="Új" Command="{Binding NewDocumentCommand}" InputGesture="Ctrl+N" />
+            <MenuItem Header="Megnyitás…" Command="{Binding OpenCommand}" InputGesture="Ctrl+O" />
+            <Separator />
+            <MenuItem Header="Mentés" Command="{Binding SaveCommand}" InputGesture="Ctrl+S" />
+            <MenuItem Header="Mentés másként…" Command="{Binding SaveAsCommand}" InputGesture="Ctrl+Shift+S" />
+            <MenuItem Header="Összes mentése" Command="{Binding SaveAllCommand}" />
+            <Separator />
+            <MenuItem Header="Bezárás" Command="{Binding CloseCommand}" InputGesture="Ctrl+W" />
+            <MenuItem Header="Kilépés" Click="OnExitClick" />
+        </MenuItem>
+        <MenuItem Header="Formázás">
+            <MenuItem Header="Félkövér" Command="{Binding FormatCommand}" CommandParameter="{x:Static svc:MarkdownFormat.Bold}" InputGesture="Ctrl+B" />
+            <MenuItem Header="Dőlt" Command="{Binding FormatCommand}" CommandParameter="{x:Static svc:MarkdownFormat.Italic}" InputGesture="Ctrl+I" />
+            <MenuItem Header="Áthúzott" Command="{Binding FormatCommand}" CommandParameter="{x:Static svc:MarkdownFormat.Strikethrough}" InputGesture="Ctrl+Shift+X" />
+            <MenuItem Header="Kód (sorközi)" Command="{Binding FormatCommand}" CommandParameter="{x:Static svc:MarkdownFormat.InlineCode}" InputGesture="Ctrl+E" />
+            <MenuItem Header="Kódblokk" Command="{Binding FormatCommand}" CommandParameter="{x:Static svc:MarkdownFormat.CodeBlock}" />
+            <Separator />
+            <MenuItem Header="Címsor 1" Command="{Binding FormatCommand}" CommandParameter="{x:Static svc:MarkdownFormat.Heading1}" InputGesture="Ctrl+D1" />
+            <MenuItem Header="Címsor 2" Command="{Binding FormatCommand}" CommandParameter="{x:Static svc:MarkdownFormat.Heading2}" InputGesture="Ctrl+D2" />
+            <MenuItem Header="Címsor 3" Command="{Binding FormatCommand}" CommandParameter="{x:Static svc:MarkdownFormat.Heading3}" InputGesture="Ctrl+D3" />
+            <Separator />
+            <MenuItem Header="Felsorolás" Command="{Binding FormatCommand}" CommandParameter="{x:Static svc:MarkdownFormat.BulletList}" InputGesture="Ctrl+Shift+D8" />
+            <MenuItem Header="Számozott lista" Command="{Binding FormatCommand}" CommandParameter="{x:Static svc:MarkdownFormat.NumberedList}" InputGesture="Ctrl+Shift+D7" />
+            <MenuItem Header="Feladatlista" Command="{Binding FormatCommand}" CommandParameter="{x:Static svc:MarkdownFormat.TaskList}" />
+            <MenuItem Header="Idézet" Command="{Binding FormatCommand}" CommandParameter="{x:Static svc:MarkdownFormat.Quote}" InputGesture="Ctrl+Shift+Q" />
+            <Separator />
+            <MenuItem Header="Hivatkozás" Command="{Binding FormatCommand}" CommandParameter="{x:Static svc:MarkdownFormat.Link}" InputGesture="Ctrl+K" />
+            <MenuItem Header="Kép" Command="{Binding FormatCommand}" CommandParameter="{x:Static svc:MarkdownFormat.Image}" />
+            <MenuItem Header="Táblázat" Command="{Binding FormatCommand}" CommandParameter="{x:Static svc:MarkdownFormat.Table}" />
+            <MenuItem Header="Vízszintes vonal" Command="{Binding FormatCommand}" CommandParameter="{x:Static svc:MarkdownFormat.HorizontalRule}" />
+        </MenuItem>
+        <MenuItem Header="Nézet">
+            <MenuItem Header="Szerkesztés" Command="{Binding SetViewModeCommand}" CommandParameter="{x:Static vm:ViewMode.Edit}" InputGesture="F5" />
+            <MenuItem Header="Osztott nézet" Command="{Binding SetViewModeCommand}" CommandParameter="{x:Static vm:ViewMode.Split}" InputGesture="F6" />
+            <MenuItem Header="Olvasás" Command="{Binding SetViewModeCommand}" CommandParameter="{x:Static vm:ViewMode.Preview}" InputGesture="F7" />
+            <Separator />
+            <MenuItem Header="Sortörés" Command="{Binding ToggleWordWrapCommand}" ToggleType="CheckBox" IsChecked="{Binding WordWrap, Mode=OneWay}" />
+            <Separator />
+            <MenuItem Header="Világos / sötét téma" Command="{Binding ToggleBaseThemeCommand}" />
+            <MenuItem Header="Színséma">
+                <MenuItem Header="Kék" Command="{Binding SetColorThemeCommand}" CommandParameter="{x:Static enums:SukiColor.Blue}" />
+                <MenuItem Header="Zöld" Command="{Binding SetColorThemeCommand}" CommandParameter="{x:Static enums:SukiColor.Green}" />
+                <MenuItem Header="Piros" Command="{Binding SetColorThemeCommand}" CommandParameter="{x:Static enums:SukiColor.Red}" />
+                <MenuItem Header="Narancs" Command="{Binding SetColorThemeCommand}" CommandParameter="{x:Static enums:SukiColor.Orange}" />
+            </MenuItem>
+        </MenuItem>
+    </suki:SukiWindow.MenuItems>
+
+    <DockPanel>
+        <!-- Toolbar -->
+        <Border DockPanel.Dock="Top" Classes="Toolbar" Padding="8,4">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Spacing="2">
+                    <Button Classes="Tool Basic" Content="✎" ToolTip.Tip="Szerkesztés (F5)"
+                            Command="{Binding SetViewModeCommand}" CommandParameter="{x:Static vm:ViewMode.Edit}" />
+                    <Button Classes="Tool Basic" Content="◧" ToolTip.Tip="Osztott nézet (F6)"
+                            Command="{Binding SetViewModeCommand}" CommandParameter="{x:Static vm:ViewMode.Split}" />
+                    <Button Classes="Tool Basic" Content="👁" ToolTip.Tip="Olvasás (F7)"
+                            Command="{Binding SetViewModeCommand}" CommandParameter="{x:Static vm:ViewMode.Preview}" />
+                    <Separator Classes="ToolSeparator" />
+                    <Button Classes="Tool Basic" Content="◐" ToolTip.Tip="Világos / sötét téma"
+                            Command="{Binding ToggleBaseThemeCommand}" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Spacing="2">
+                    <Button Classes="Tool Basic" Content="📄" ToolTip.Tip="Új (Ctrl+N)" Command="{Binding NewDocumentCommand}" />
+                    <Button Classes="Tool Basic" Content="📂" ToolTip.Tip="Megnyitás (Ctrl+O)" Command="{Binding OpenCommand}" />
+                    <Button Classes="Tool Basic" Content="💾" ToolTip.Tip="Mentés (Ctrl+S)" Command="{Binding SaveCommand}" />
+                    <Separator Classes="ToolSeparator" />
+                    <Button Classes="Tool Basic" FontWeight="Bold" Content="B" ToolTip.Tip="Félkövér (Ctrl+B)"
+                            Command="{Binding FormatCommand}" CommandParameter="{x:Static svc:MarkdownFormat.Bold}" />
+                    <Button Classes="Tool Basic" FontStyle="Italic" Content="I" ToolTip.Tip="Dőlt (Ctrl+I)"
+                            Command="{Binding FormatCommand}" CommandParameter="{x:Static svc:MarkdownFormat.Italic}" />
+                    <Button Classes="Tool Basic" ToolTip.Tip="Áthúzott (Ctrl+Shift+X)"
+                            Command="{Binding FormatCommand}" CommandParameter="{x:Static svc:MarkdownFormat.Strikethrough}">
+                        <TextBlock Text="S" TextDecorations="Strikethrough" />
+                    </Button>
+                    <Button Classes="Tool Basic" FontFamily="{StaticResource MonospaceFont}" Content="&lt;/&gt;" ToolTip.Tip="Sorközi kód (Ctrl+E)"
+                            Command="{Binding FormatCommand}" CommandParameter="{x:Static svc:MarkdownFormat.InlineCode}" />
+                    <Button Classes="Tool Basic" FontFamily="{StaticResource MonospaceFont}" Content="{}{ }" ToolTip.Tip="Kódblokk"
+                            Command="{Binding FormatCommand}" CommandParameter="{x:Static svc:MarkdownFormat.CodeBlock}" />
+                    <Separator Classes="ToolSeparator" />
+                    <Button Classes="Tool Basic" Content="H1" ToolTip.Tip="Címsor 1 (Ctrl+1)"
+                            Command="{Binding FormatCommand}" CommandParameter="{x:Static svc:MarkdownFormat.Heading1}" />
+                    <Button Classes="Tool Basic" Content="H2" ToolTip.Tip="Címsor 2 (Ctrl+2)"
+                            Command="{Binding FormatCommand}" CommandParameter="{x:Static svc:MarkdownFormat.Heading2}" />
+                    <Button Classes="Tool Basic" Content="H3" ToolTip.Tip="Címsor 3 (Ctrl+3)"
+                            Command="{Binding FormatCommand}" CommandParameter="{x:Static svc:MarkdownFormat.Heading3}" />
+                    <Separator Classes="ToolSeparator" />
+                    <Button Classes="Tool Basic" Content="•≡" ToolTip.Tip="Felsorolás (Ctrl+Shift+8)"
+                            Command="{Binding FormatCommand}" CommandParameter="{x:Static svc:MarkdownFormat.BulletList}" />
+                    <Button Classes="Tool Basic" Content="1≡" ToolTip.Tip="Számozott lista (Ctrl+Shift+7)"
+                            Command="{Binding FormatCommand}" CommandParameter="{x:Static svc:MarkdownFormat.NumberedList}" />
+                    <Button Classes="Tool Basic" Content="☑" ToolTip.Tip="Feladatlista"
+                            Command="{Binding FormatCommand}" CommandParameter="{x:Static svc:MarkdownFormat.TaskList}" />
+                    <Button Classes="Tool Basic" Content="❝" ToolTip.Tip="Idézet (Ctrl+Shift+Q)"
+                            Command="{Binding FormatCommand}" CommandParameter="{x:Static svc:MarkdownFormat.Quote}" />
+                    <Separator Classes="ToolSeparator" />
+                    <Button Classes="Tool Basic" Content="🔗" ToolTip.Tip="Hivatkozás (Ctrl+K)"
+                            Command="{Binding FormatCommand}" CommandParameter="{x:Static svc:MarkdownFormat.Link}" />
+                    <Button Classes="Tool Basic" Content="🖼" ToolTip.Tip="Kép"
+                            Command="{Binding FormatCommand}" CommandParameter="{x:Static svc:MarkdownFormat.Image}" />
+                    <Button Classes="Tool Basic" Content="▦" ToolTip.Tip="Táblázat"
+                            Command="{Binding FormatCommand}" CommandParameter="{x:Static svc:MarkdownFormat.Table}" />
+                    <Button Classes="Tool Basic" Content="―" ToolTip.Tip="Vízszintes vonal"
+                            Command="{Binding FormatCommand}" CommandParameter="{x:Static svc:MarkdownFormat.HorizontalRule}" />
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <!-- Status bar -->
+        <Border DockPanel.Dock="Bottom" Classes="StatusBar" Padding="12,4">
+            <DockPanel DataContext="{Binding SelectedDocument}" x:DataType="vm:DocumentViewModel">
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Spacing="16">
+                    <TextBlock Text="{Binding CaretLine, StringFormat='Sor {0}'}" />
+                    <TextBlock Text="{Binding CaretColumn, StringFormat='Oszlop {0}'}" />
+                    <TextBlock Text="{Binding WordCount, StringFormat='{}{0} szó'}" />
+                    <TextBlock Text="{Binding CharacterCount, StringFormat='{}{0} karakter'}" />
+                    <TextBlock Text="UTF-8" />
+                    <TextBlock Text="Markdown" />
+                </StackPanel>
+                <TextBlock Text="{Binding ToolTip}" TextTrimming="CharacterEllipsis" />
+            </DockPanel>
+        </Border>
+
+        <!-- Documents -->
+        <TabControl x:Name="DocumentTabs"
+                    ItemsSource="{Binding Documents}"
+                    SelectedItem="{Binding SelectedDocument}"
+                    Padding="0">
+            <TabControl.ItemTemplate>
+                <DataTemplate x:DataType="vm:DocumentViewModel">
+                    <StackPanel Orientation="Horizontal" Spacing="6" ToolTip.Tip="{Binding ToolTip}">
+                        <TextBlock Text="{Binding DisplayTitle}" VerticalAlignment="Center" />
+                        <Button Classes="TabClose Basic" Content="✕"
+                                Command="{Binding $parent[TabControl].((vm:MainWindowViewModel)DataContext).CloseCommand}"
+                                CommandParameter="{Binding}" />
+                    </StackPanel>
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+            <TabControl.ContentTemplate>
+                <DataTemplate x:DataType="vm:DocumentViewModel">
+                    <views:DocumentView />
+                </DataTemplate>
+            </TabControl.ContentTemplate>
+        </TabControl>
+    </DockPanel>
+</suki:SukiWindow>
